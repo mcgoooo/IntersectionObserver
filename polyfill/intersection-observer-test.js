@@ -11,7 +11,7 @@
 // Sets the timeout to three times the poll interval to ensure all updates
 // happen (especially in slower browsers). Native implementations get the
 // standard 100ms timeout defined in the spec.
-var ASYNC_TIMEOUT = IntersectionObserver.prototype.THROTTLE_TIMEOUT * 3 || 100;
+var ASYNC_TIMEOUT = window.polyfill.IntersectionObserver.prototype.THROTTLE_TIMEOUT * 3 || 100;
 
 
 var io;
@@ -30,7 +30,7 @@ var targetEl4;
 
 
 describe('IntersectionObserver', function() {
-
+  const IntersectionObserver = window.polyfill.IntersectionObserver
   before(function() {
     // If the browser running the tests doesn't support MutationObserver,
     // fall back to polling.
@@ -188,9 +188,10 @@ describe('IntersectionObserver', function() {
 
     it('triggers with the correct arguments', function(done) {
       io = new IntersectionObserver(function(records, observer) {
+        console.log(records.length)
         expect(records.length).to.be(2);
-        expect(records[0] instanceof IntersectionObserverEntry).to.be.ok();
-        expect(records[1] instanceof IntersectionObserverEntry).to.be.ok();
+        expect(records[0] instanceof window.polyfill.IntersectionObserverEntry).to.be.ok();
+        expect(records[1] instanceof window.polyfill.IntersectionObserverEntry).to.be.ok();
         expect(observer).to.be(io);
         expect(this).to.be(io);
         done();
